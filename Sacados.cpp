@@ -101,9 +101,11 @@ std::vector<int> Sacados::rand_x()
 }
 
 
+
+
 double Sacados::rechercheAlea(int nbIteration){
 
-  srand(time(NULL));
+
   
   std::vector<int> x = rand_x();
   double sBest = evaluation(x);
@@ -123,3 +125,122 @@ double Sacados::rechercheAlea(int nbIteration){
 
   return sBest;
 }
+
+void Sacados::voisinAlea(std::vector<int> &x){
+
+  int indice = rand()%x.size();
+  if(x[indice] ==0)
+    x[indice] =1;
+  else x[indice] = 0;
+
+}
+
+void Sacados::voisin(std::vector<int> &x, int indice)
+{
+  if(x[indice] ==0)
+    x[indice] = 1;
+  else x[indice] = 0;
+
+}
+
+double Sacados::marcheAlea(int nbIteration){
+
+  std::vector<int> x = rand_x();
+  double sBest = evaluation(x);
+  double sprime = 0;
+  std::vector<int> xprime;
+ 
+  for (int i =0; i<nbIteration; i++){
+    xprime = voisinAlea(x);
+    sprime = evaluation(x);
+
+    if(sprime > sBest)
+      {
+	sBest = sprime;
+	x = xprime;
+      }
+    
+  }
+
+  return sBest;
+}
+
+
+double Sacados::hillClimberBest(int nbEvalMax)
+{
+
+  std::vector<int> x = rand_x();
+  double sBest = evaluation(x);
+  double sprime = 0;
+  int indiceTrouve = 0;
+  double fbestN;
+  bool stop = false;
+  int nbEval = 1;
+  
+  while (!stop && nbEval < nbEvalMax) {
+
+      fbestN = -1;
+      
+      for(int j = 0; j<x.size(); j++)
+	{
+	  voisin(x, j);
+	  sprime = evaluation(x);
+	  nbEval++;
+	  if (sprime > fbestN)
+	    {
+	      fbestN = sprime;
+	      indiceTrouve = j; 
+	    }
+	   voisin(x, j);
+
+	}
+
+      if (sBest < fbestN) {
+	voisin(x, indiceTrouve);
+	sBest = fbestN;
+      } else {
+	stop = true;
+      }
+    }
+
+  return sBest;
+}
+
+double Sacados::hillClimberFirst(int nbEvalMax){
+
+  std::vector<int> x = rand_x();
+  double sBest = evaluation(x);
+  double sprime = 0;
+  int indiceTrouve = 0;
+  double fbestN;
+  bool stop = false;
+  int nbEval = 1;
+  std::vector<int> dejaVisite ;
+  
+  while(!stop && nbEval < nbEvalMax){
+    voisinAlea(x);
+    evaluation(x);
+    nbEval++;
+  
+    
+    while(fbestN >= sprime && nbEval<=nbEvalMax && !x.empty()){
+      voisinAlea(x);
+      evaluation(sprime);
+      nbEval++;
+      dejaVisite.push_back(sprime);
+      x.erase(x.begin()+sprime);
+    }
+
+    if (sBest < fbestN) {
+      voisin(x, indiceTrouve);
+      sBest = fbestN;
+    } else {
+      stop = true;
+    }
+        
+  }
+  
+  return sBest
+
+    }
+

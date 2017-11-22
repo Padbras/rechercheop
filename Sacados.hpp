@@ -20,8 +20,13 @@ public:
   void lireFichier(std::string );
   void toString();
   float calculCoeff();
-  double evaluation(std::vector<int> & x);
+  double evaluation(std::vector<int> & );
   int get_nb_objets();
-  double rechercheAlea(int nbIteration);
+  double rechercheAlea(int);
+  double marcheAlea(int);
+  double hillClimberBest(int);
+  double hillClimberFirst(int);
+  void voisin(std::vector<int> &, int);
+  std::vector<int> voisinAlea(std::vector<int> &);
   std::vector<int> rand_x();
 };
