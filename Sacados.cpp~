@@ -137,14 +137,12 @@ std::vector<int> Sacados::voisinAlea(std::vector<int> &x){
 }
 
 
-int Sacados::voisinAlea2(std::vector<int> &x){
+void Sacados::voisinAlea2(std::vector<int> &x){
 
   int indice = rand()%x.size();
   if(x[indice] ==0)
     x[indice] =1;
   else x[indice] = 0;
-
-  return indice;
 
 }
 
@@ -258,43 +256,47 @@ double Sacados::hillClimberFirst(int nbEvalMax)
       return sBest;
 
       }
-  */
+      */
 }
 
 
-double Sacados::recuitSimule(double T, int iterationAvModif, double facteurReduction, int nbEvalMax)
-{
-  std::vector<int> x = rand_x();
-  double Sx = evaluation(x);
-  double Sprime;
-  double delta;
-  int cptReduction = 0;		
-  int u;
-  int indice;
-  bool stop = false;
-  int nbEval = 0;
+  double Sacados::recuitSimule(double T, int iterationAvModif, int facteurReduction)
+  {
+    std::vector<int> x = rand_x();
+		double Sx = evaluation(x);
+		double Sprime;
+		double delta;
+		int cptReduction = 0;		
+		int u;
+		bool stop = false;
 
-  while(nbEval < nbEvalMax)
-    { 
-      indice = voisinAlea2(x);
-      Sprime = evaluation(x);
-      delta = Sprime - Sx;
-      if(!delta <= 0)
-	{
-	  u = rand()%2;
-	  if(u >= exp(delta/T)){
-	    voisin(x,indice);
-	  }
-	}
-	     
-      // Critere de reduction de la temperature		       
-      cptReduction++;  
-      if(cptReduction == iterationAvModif)
-	{
-	  cptReduction = 0;
-	  T = T*facteurReduction;
-	}
-      // Critere d'arret
-      nbEval++;
-    }
-}
+		while(!stop)
+		  {
+		    x = voisinAlea(x);
+		    Sprime = evaluation(x);
+		    delta = Sprime - Sx;
+		    if(delta>0)
+		      {
+			Sx = Sprime;
+		      }
+		
+		    else{
+		      u = rand()%2;
+		      if(u < exp(delta/T)){
+			Sx = Sprime;
+		      }
+		      else 
+
+			}
+		
+		       
+		    cptReduction++;  
+		    if(cptReduction == iterationAvModif)
+		      {
+			cptReduction = 0;
+			T = T*facteurReduction;
+		      }	
+		      
+		 
+		  }
+		}

@@ -15,18 +15,16 @@ int main(int argc, char ** argv)
       double valeurMarcheAlea = 0;
       double valeurHillBest = 0;
       double valeurHillFirst = 0;
-      double valeurRecuitSimule = 0;
 
       int nbRun = atoi(argv[2]);
       sac.lireFichier(argv[1]);
 
       //valeurHillBest = sac.hillClimberBest(nbRun);
-      //valeurHillFirst = sac.hillClimberFirst(nbRun);
-      valeurRecuitSimule = sac.recuitSimule(42, 100, 0.95, 100);
+      valeurHillFirst = sac.hillClimberFirst(nbRun);
 
       
       //std::cout << nbRun <<" " << valeurHillBest<<" "<<30000 << std::endl;
-      //std::cout << nbRun <<" "<<valeurHillFirst<<" "<<30000<<std::endl;
+      std::cout << nbRun <<" "<<valeurHillFirst<<" "<<30000<<std::endl;
       
       return 0;
     }
